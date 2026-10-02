@@ -10,7 +10,7 @@ export async function listPackages(): Promise<Package[]> {
 // TODO(supabase): supabase.from("packages").insert(input).select().single()
 export async function createPackage(input: PackageInput): Promise<Package> {
   await delay();
-  const row: Package = { ...input, id: uid(), created_at: now(), updated_at: now() };
+  const row: Package = { ...input, id: uid(), owner_id: "mock-owner", created_at: now(), updated_at: now() };
   writeTable("packages", [...readTable<Package>("packages"), row]);
   return row;
 }
@@ -21,9 +21,12 @@ export async function updatePackage(id: string, input: Partial<PackageInput>): P
   const rows = readTable<Package>("packages");
   const i = rows.findIndex((p) => p.id === id);
   if (i < 0) throw new Error("Pacote não encontrado");
-  rows[i] = { ...rows[i], ...input, updated_at: now() };
+  const current = rows[i];
+  if (!current) throw new Error("Pacote não encontrado");
+  const updated: Package = { ...current, ...input, updated_at: now() };
+  rows[i] = updated;
   writeTable("packages", rows);
-  return rows[i];
+  return updated;
 }
 
 // TODO(supabase): supabase.from("packages").delete().eq("id", id)

@@ -23,7 +23,8 @@ export async function listBookings(): Promise<BookingWithRelations[]> {
 export async function getBooking(id: string): Promise<BookingWithRelations | null> {
   await delay(150);
   const row = readTable<Booking>("bookings").find((b) => b.id === id);
-  return row ? withRelations([row])[0] : null;
+  if (!row) return null;
+  return withRelations([row])[0] ?? null;
 }
 
 // TODO(supabase): supabase.from("bookings").insert(input).select().single()
@@ -31,7 +32,7 @@ export async function getBooking(id: string): Promise<BookingWithRelations | nul
 // e "generate-contract" (ClickSign) que atualizam calendar_sync_status / contract_status.
 export async function createBooking(input: BookingInput): Promise<Booking> {
   await delay();
-  const row: Booking = { ...input, id: uid(), created_at: now(), updated_at: now() };
+  const row: Booking = { ...input, id: uid(), owner_id: "mock-owner", created_at: now(), updated_at: now() };
   writeTable("bookings", [...readTable<Booking>("bookings"), row]);
   return row;
 }
@@ -42,9 +43,12 @@ export async function updateBooking(id: string, input: Partial<BookingInput>): P
   const rows = readTable<Booking>("bookings");
   const i = rows.findIndex((b) => b.id === id);
   if (i < 0) throw new Error("Ensaio não encontrado");
-  rows[i] = { ...rows[i], ...input, updated_at: now() };
+  const current = rows[i];
+  if (!current) throw new Error("Ensaio não encontrado");
+  const updated: Booking = { ...current, ...input, updated_at: now() };
+  rows[i] = updated;
   writeTable("bookings", rows);
-  return rows[i];
+  return updated;
 }
 
 // TODO(supabase): supabase.from("bookings").delete().eq("id", id)

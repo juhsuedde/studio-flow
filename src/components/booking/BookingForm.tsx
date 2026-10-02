@@ -214,7 +214,7 @@ function Stepper({ step, onJump }: { step: number; onJump: (i: number) => void }
   );
 }
 
-function Field({ label, error, children, htmlFor, className }: { label: string; error?: string; children: React.ReactNode; htmlFor?: string; className?: string }) {
+function Field({ label, error, children, htmlFor, className }: { label: string; error?: string | undefined; children: React.ReactNode; htmlFor?: string | undefined; className?: string | undefined }) {
   return (
     <div className={cn("space-y-1.5", className)}>
       <Label htmlFor={htmlFor}>{label}</Label>
@@ -260,7 +260,7 @@ function ClientFields({ draft, setDraft, errors }: { draft: BookingDraft; setDra
   );
 }
 
-function BookingFields({ draft, setDraft, errors, packages, loading }: { draft: BookingDraft; setDraft: SetDraft; errors: Errors; packages?: Package[]; loading: boolean }) {
+function BookingFields({ draft, setDraft, errors, packages, loading }: { draft: BookingDraft; setDraft: SetDraft; errors: Errors; packages: Package[] | undefined; loading: boolean }) {
   const qc = useQueryClient();
   const [dialog, setDialog] = useState<{ open: boolean; pkg: Package | null }>({ open: false, pkg: null });
   const [toDelete, setToDelete] = useState<Package | null>(null);

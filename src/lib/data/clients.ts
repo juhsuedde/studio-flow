@@ -17,7 +17,7 @@ export async function getClient(id: string): Promise<Client | null> {
 // (owner_id é preenchido pelo default auth.uid() no banco)
 export async function createClient(input: ClientInput): Promise<Client> {
   await delay();
-  const row: Client = { ...input, id: uid(), created_at: now(), updated_at: now() };
+  const row: Client = { ...input, id: uid(), owner_id: "mock-owner", created_at: now(), updated_at: now() };
   writeTable("clients", [...readTable<Client>("clients"), row]);
   return row;
 }
@@ -28,9 +28,12 @@ export async function updateClient(id: string, input: Partial<ClientInput>): Pro
   const rows = readTable<Client>("clients");
   const i = rows.findIndex((c) => c.id === id);
   if (i < 0) throw new Error("Cliente não encontrada");
-  rows[i] = { ...rows[i], ...input, updated_at: now() };
+  const current = rows[i];
+  if (!current) throw new Error("Cliente não encontrada");
+  const updated: Client = { ...current, ...input, updated_at: now() };
+  rows[i] = updated;
   writeTable("clients", rows);
-  return rows[i];
+  return updated;
 }
 
 // TODO(supabase): supabase.from("clients").delete().eq("id", id)

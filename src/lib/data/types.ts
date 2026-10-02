@@ -10,6 +10,7 @@ export type IntegrationStatus = "not_started" | "pending" | "done" | "error";
 
 export interface Client {
   id: string;
+  owner_id: string;
   name: string;
   phone: string | null;
   email: string | null;
@@ -21,6 +22,7 @@ export interface Client {
 
 export interface Package {
   id: string;
+  owner_id: string;
   name: string;
   description: string | null;
   price_cents: number;
@@ -32,6 +34,7 @@ export interface Package {
 
 export interface Booking {
   id: string;
+  owner_id: string;
   client_id: string;
   package_id: string;
   date: string; // YYYY-MM-DD
@@ -58,7 +61,7 @@ export interface BookingWithRelations extends Booking {
 
 export type ClientInput = Pick<Client, "name" | "phone" | "email" | "cpf" | "notes">;
 export type PackageInput = Pick<Package, "name" | "description" | "price_cents" | "duration_minutes" | "active">;
-export type BookingInput = Omit<Booking, "id" | "created_at" | "updated_at">;
+export type BookingInput = Omit<Booking, "id" | "owner_id" | "created_at" | "updated_at">;
 
 /** Rascunho compartilhado pelos dois modos de cadastro (formulário e texto livre). */
 export interface BookingDraft {

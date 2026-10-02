@@ -1,20 +1,22 @@
 import type { Booking, Client, Package } from "./types";
 
 const ts = "2026-09-01T12:00:00.000Z";
+const owner_id = "00000000-0000-0000-0000-000000000001";
 
 export const seedPackages: Package[] = [
-  { id: "pkg-bronze", name: "Bronze", description: "1h de ensaio, 20 fotos editadas", price_cents: 45000, duration_minutes: 60, active: true, created_at: ts, updated_at: ts },
-  { id: "pkg-prata", name: "Prata", description: "2h de ensaio, 40 fotos editadas", price_cents: 80000, duration_minutes: 120, active: true, created_at: ts, updated_at: ts },
-  { id: "pkg-ouro", name: "Ouro", description: "3h, 2 locações, 70 fotos + álbum", price_cents: 120000, duration_minutes: 180, active: true, created_at: ts, updated_at: ts },
+  { id: "pkg-bronze", owner_id, name: "Bronze", description: "1h de ensaio, 20 fotos editadas", price_cents: 45000, duration_minutes: 60, active: true, created_at: ts, updated_at: ts },
+  { id: "pkg-prata", owner_id, name: "Prata", description: "2h de ensaio, 40 fotos editadas", price_cents: 80000, duration_minutes: 120, active: true, created_at: ts, updated_at: ts },
+  { id: "pkg-ouro", owner_id, name: "Ouro", description: "3h, 2 locações, 70 fotos + álbum", price_cents: 120000, duration_minutes: 180, active: true, created_at: ts, updated_at: ts },
 ];
 
 export const seedClients: Client[] = [
-  { id: "cli-maria", name: "Maria Oliveira", phone: "(11) 98765-4321", email: "maria@email.com", cpf: null, notes: null, created_at: ts, updated_at: ts },
-  { id: "cli-ana", name: "Ana Souza", phone: "(11) 91234-5678", email: "ana.souza@email.com", cpf: "123.456.789-09", notes: "Prefere luz natural", created_at: ts, updated_at: ts },
-  { id: "cli-julia", name: "Júlia Lima", phone: "(21) 99876-1122", email: null, cpf: null, notes: null, created_at: ts, updated_at: ts },
+  { id: "cli-maria", owner_id, name: "Maria Oliveira", phone: "(11) 98765-4321", email: "maria@email.com", cpf: null, notes: null, created_at: ts, updated_at: ts },
+  { id: "cli-ana", owner_id, name: "Ana Souza", phone: "(11) 91234-5678", email: "ana.souza@email.com", cpf: "123.456.789-09", notes: "Prefere luz natural", created_at: ts, updated_at: ts },
+  { id: "cli-julia", owner_id, name: "Júlia Lima", phone: "(21) 99876-1122", email: null, cpf: null, notes: null, created_at: ts, updated_at: ts },
 ];
 
 const b = (p: Partial<Booking> & Pick<Booking, "id" | "client_id" | "package_id" | "date" | "time" | "location" | "status" | "total_cents">): Booking => ({
+  owner_id,
   deposit_cents: 0,
   payment_method: "pix",
   payment_status: "pending",
