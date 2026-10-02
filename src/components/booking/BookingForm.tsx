@@ -260,7 +260,7 @@ function ClientFields({ draft, setDraft, errors }: { draft: BookingDraft; setDra
   );
 }
 
-function BookingFields({ draft, setDraft, errors, packages, loading }: { draft: BookingDraft; setDraft: SetDraft; errors: Errors; packages?: Package[]; loading: boolean }) {
+function BookingFields({ draft, setDraft, errors, packages, loading }: { draft: BookingDraft; setDraft: SetDraft; errors: Errors; packages: Package[] | undefined; loading: boolean }) {
   const qc = useQueryClient();
   const [dialog, setDialog] = useState<{ open: boolean; pkg: Package | null }>({ open: false, pkg: null });
   const [toDelete, setToDelete] = useState<Package | null>(null);

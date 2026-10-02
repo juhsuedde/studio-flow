@@ -53,7 +53,10 @@ export function PackageDialog({ open, onOpenChange, pkg, onSaved }: { open: bool
           className="space-y-4"
           onSubmit={(e) => {
             e.preventDefault();
-            if (!name.trim()) return toast.error("Informe o nome do pacote");
+            if (!name.trim()) {
+              toast.error("Informe o nome do pacote");
+              return;
+            }
             m.mutate();
           }}
         >
