@@ -13,11 +13,24 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ClientesRouteImport } from './routes/clientes'
 import { Route as EnsaiosRouteImport } from './routes/ensaios'
 import { Route as PacotesRouteImport } from './routes/pacotes'
+import { Route as ApiExtractRouteImport } from './routes/api.extract'
+import { Route as ApiHealthRouteImport } from './routes/api.health'
 import { Route as EnsaiosIndexRouteImport } from './routes/ensaios.index'
 import { Route as EnsaiosIdRouteImport } from './routes/ensaios.$id'
 import { Route as EnsaiosNovoRouteImport } from './routes/ensaios.novo'
+import { Route as ApiBookingsIndexRouteImport } from './routes/api.bookings.index'
+import { Route as ApiBookingsIdRouteImport } from './routes/api.bookings.$id'
+import { Route as ApiBookingsFromDraftRouteImport } from './routes/api.bookings.from-draft'
+import { Route as ApiClientsIndexRouteImport } from './routes/api.clients.index'
+import { Route as ApiClientsIdRouteImport } from './routes/api.clients.$id'
+import { Route as ApiDevResetRouteImport } from './routes/api.dev.reset'
+import { Route as ApiPackagesIndexRouteImport } from './routes/api.packages.index'
+import { Route as ApiPackagesIdRouteImport } from './routes/api.packages.$id'
 import { Route as EnsaiosIdIndexRouteImport } from './routes/ensaios.$id.index'
 import { Route as EnsaiosIdEditarRouteImport } from './routes/ensaios.$id.editar'
+import { Route as ApiBookingsIdDiagnosticRouteImport } from './routes/api.bookings.$id.diagnostic'
+import { Route as ApiBookingsIdEmitInvoiceRouteImport } from './routes/api.bookings.$id.emit-invoice'
+import { Route as ApiBookingsIdGenerateContractRouteImport } from './routes/api.bookings.$id.generate-contract'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -39,6 +52,16 @@ const PacotesRoute = PacotesRouteImport.update({
   path: '/pacotes',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiExtractRoute = ApiExtractRouteImport.update({
+  id: '/api/extract',
+  path: '/api/extract',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiHealthRoute = ApiHealthRouteImport.update({
+  id: '/api/health',
+  path: '/api/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EnsaiosIndexRoute = EnsaiosIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -54,6 +77,46 @@ const EnsaiosNovoRoute = EnsaiosNovoRouteImport.update({
   path: '/novo',
   getParentRoute: () => EnsaiosRoute,
 } as any)
+const ApiBookingsIndexRoute = ApiBookingsIndexRouteImport.update({
+  id: '/api/bookings/',
+  path: '/api/bookings/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiBookingsIdRoute = ApiBookingsIdRouteImport.update({
+  id: '/api/bookings/$id',
+  path: '/api/bookings/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiBookingsFromDraftRoute = ApiBookingsFromDraftRouteImport.update({
+  id: '/api/bookings/from-draft',
+  path: '/api/bookings/from-draft',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiClientsIndexRoute = ApiClientsIndexRouteImport.update({
+  id: '/api/clients/',
+  path: '/api/clients/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiClientsIdRoute = ApiClientsIdRouteImport.update({
+  id: '/api/clients/$id',
+  path: '/api/clients/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiDevResetRoute = ApiDevResetRouteImport.update({
+  id: '/api/dev/reset',
+  path: '/api/dev/reset',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPackagesIndexRoute = ApiPackagesIndexRouteImport.update({
+  id: '/api/packages/',
+  path: '/api/packages/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPackagesIdRoute = ApiPackagesIdRouteImport.update({
+  id: '/api/packages/$id',
+  path: '/api/packages/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EnsaiosIdIndexRoute = EnsaiosIdIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -64,26 +127,69 @@ const EnsaiosIdEditarRoute = EnsaiosIdEditarRouteImport.update({
   path: '/editar',
   getParentRoute: () => EnsaiosIdRoute,
 } as any)
+const ApiBookingsIdDiagnosticRoute = ApiBookingsIdDiagnosticRouteImport.update({
+  id: '/diagnostic',
+  path: '/diagnostic',
+  getParentRoute: () => ApiBookingsIdRoute,
+} as any)
+const ApiBookingsIdEmitInvoiceRoute =
+  ApiBookingsIdEmitInvoiceRouteImport.update({
+    id: '/emit-invoice',
+    path: '/emit-invoice',
+    getParentRoute: () => ApiBookingsIdRoute,
+  } as any)
+const ApiBookingsIdGenerateContractRoute =
+  ApiBookingsIdGenerateContractRouteImport.update({
+    id: '/generate-contract',
+    path: '/generate-contract',
+    getParentRoute: () => ApiBookingsIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/clientes': typeof ClientesRoute
   '/ensaios': typeof EnsaiosRouteWithChildren
   '/pacotes': typeof PacotesRoute
+  '/api/extract': typeof ApiExtractRoute
+  '/api/health': typeof ApiHealthRoute
   '/ensaios/$id': typeof EnsaiosIdRouteWithChildren
   '/ensaios/novo': typeof EnsaiosNovoRoute
   '/ensaios/': typeof EnsaiosIndexRoute
+  '/api/bookings/$id': typeof ApiBookingsIdRouteWithChildren
+  '/api/bookings/from-draft': typeof ApiBookingsFromDraftRoute
+  '/api/clients/$id': typeof ApiClientsIdRoute
+  '/api/dev/reset': typeof ApiDevResetRoute
+  '/api/packages/$id': typeof ApiPackagesIdRoute
   '/ensaios/$id/editar': typeof EnsaiosIdEditarRoute
+  '/api/bookings/': typeof ApiBookingsIndexRoute
+  '/api/clients/': typeof ApiClientsIndexRoute
+  '/api/packages/': typeof ApiPackagesIndexRoute
   '/ensaios/$id/': typeof EnsaiosIdIndexRoute
+  '/api/bookings/$id/diagnostic': typeof ApiBookingsIdDiagnosticRoute
+  '/api/bookings/$id/emit-invoice': typeof ApiBookingsIdEmitInvoiceRoute
+  '/api/bookings/$id/generate-contract': typeof ApiBookingsIdGenerateContractRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/clientes': typeof ClientesRoute
   '/pacotes': typeof PacotesRoute
+  '/api/extract': typeof ApiExtractRoute
+  '/api/health': typeof ApiHealthRoute
   '/ensaios/novo': typeof EnsaiosNovoRoute
   '/ensaios': typeof EnsaiosIndexRoute
+  '/api/bookings/$id': typeof ApiBookingsIdRouteWithChildren
+  '/api/bookings/from-draft': typeof ApiBookingsFromDraftRoute
+  '/api/clients/$id': typeof ApiClientsIdRoute
+  '/api/dev/reset': typeof ApiDevResetRoute
+  '/api/packages/$id': typeof ApiPackagesIdRoute
   '/ensaios/$id/editar': typeof EnsaiosIdEditarRoute
+  '/api/bookings': typeof ApiBookingsIndexRoute
+  '/api/clients': typeof ApiClientsIndexRoute
+  '/api/packages': typeof ApiPackagesIndexRoute
   '/ensaios/$id': typeof EnsaiosIdIndexRoute
+  '/api/bookings/$id/diagnostic': typeof ApiBookingsIdDiagnosticRoute
+  '/api/bookings/$id/emit-invoice': typeof ApiBookingsIdEmitInvoiceRoute
+  '/api/bookings/$id/generate-contract': typeof ApiBookingsIdGenerateContractRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -91,11 +197,24 @@ export interface FileRoutesById {
   '/clientes': typeof ClientesRoute
   '/ensaios': typeof EnsaiosRouteWithChildren
   '/pacotes': typeof PacotesRoute
+  '/api/extract': typeof ApiExtractRoute
+  '/api/health': typeof ApiHealthRoute
   '/ensaios/$id': typeof EnsaiosIdRouteWithChildren
   '/ensaios/novo': typeof EnsaiosNovoRoute
   '/ensaios/': typeof EnsaiosIndexRoute
+  '/api/bookings/$id': typeof ApiBookingsIdRouteWithChildren
+  '/api/bookings/from-draft': typeof ApiBookingsFromDraftRoute
+  '/api/clients/$id': typeof ApiClientsIdRoute
+  '/api/dev/reset': typeof ApiDevResetRoute
+  '/api/packages/$id': typeof ApiPackagesIdRoute
   '/ensaios/$id/editar': typeof EnsaiosIdEditarRoute
+  '/api/bookings/': typeof ApiBookingsIndexRoute
+  '/api/clients/': typeof ApiClientsIndexRoute
+  '/api/packages/': typeof ApiPackagesIndexRoute
   '/ensaios/$id/': typeof EnsaiosIdIndexRoute
+  '/api/bookings/$id/diagnostic': typeof ApiBookingsIdDiagnosticRoute
+  '/api/bookings/$id/emit-invoice': typeof ApiBookingsIdEmitInvoiceRoute
+  '/api/bookings/$id/generate-contract': typeof ApiBookingsIdGenerateContractRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -104,31 +223,70 @@ export interface FileRouteTypes {
     | '/clientes'
     | '/ensaios'
     | '/pacotes'
+    | '/api/extract'
+    | '/api/health'
     | '/ensaios/$id'
     | '/ensaios/novo'
     | '/ensaios/'
+    | '/api/bookings/$id'
+    | '/api/bookings/from-draft'
+    | '/api/clients/$id'
+    | '/api/dev/reset'
+    | '/api/packages/$id'
     | '/ensaios/$id/editar'
+    | '/api/bookings/'
+    | '/api/clients/'
+    | '/api/packages/'
     | '/ensaios/$id/'
+    | '/api/bookings/$id/diagnostic'
+    | '/api/bookings/$id/emit-invoice'
+    | '/api/bookings/$id/generate-contract'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/clientes'
     | '/pacotes'
+    | '/api/extract'
+    | '/api/health'
     | '/ensaios/novo'
     | '/ensaios'
+    | '/api/bookings/$id'
+    | '/api/bookings/from-draft'
+    | '/api/clients/$id'
+    | '/api/dev/reset'
+    | '/api/packages/$id'
     | '/ensaios/$id/editar'
+    | '/api/bookings'
+    | '/api/clients'
+    | '/api/packages'
     | '/ensaios/$id'
+    | '/api/bookings/$id/diagnostic'
+    | '/api/bookings/$id/emit-invoice'
+    | '/api/bookings/$id/generate-contract'
   id:
     | '__root__'
     | '/'
     | '/clientes'
     | '/ensaios'
     | '/pacotes'
+    | '/api/extract'
+    | '/api/health'
     | '/ensaios/$id'
     | '/ensaios/novo'
     | '/ensaios/'
+    | '/api/bookings/$id'
+    | '/api/bookings/from-draft'
+    | '/api/clients/$id'
+    | '/api/dev/reset'
+    | '/api/packages/$id'
     | '/ensaios/$id/editar'
+    | '/api/bookings/'
+    | '/api/clients/'
+    | '/api/packages/'
     | '/ensaios/$id/'
+    | '/api/bookings/$id/diagnostic'
+    | '/api/bookings/$id/emit-invoice'
+    | '/api/bookings/$id/generate-contract'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -136,6 +294,16 @@ export interface RootRouteChildren {
   ClientesRoute: typeof ClientesRoute
   EnsaiosRoute: typeof EnsaiosRouteWithChildren
   PacotesRoute: typeof PacotesRoute
+  ApiExtractRoute: typeof ApiExtractRoute
+  ApiHealthRoute: typeof ApiHealthRoute
+  ApiBookingsIdRoute: typeof ApiBookingsIdRouteWithChildren
+  ApiBookingsFromDraftRoute: typeof ApiBookingsFromDraftRoute
+  ApiClientsIdRoute: typeof ApiClientsIdRoute
+  ApiDevResetRoute: typeof ApiDevResetRoute
+  ApiPackagesIdRoute: typeof ApiPackagesIdRoute
+  ApiBookingsIndexRoute: typeof ApiBookingsIndexRoute
+  ApiClientsIndexRoute: typeof ApiClientsIndexRoute
+  ApiPackagesIndexRoute: typeof ApiPackagesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -168,6 +336,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PacotesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/extract': {
+      id: '/api/extract'
+      path: '/api/extract'
+      fullPath: '/api/extract'
+      preLoaderRoute: typeof ApiExtractRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/health': {
+      id: '/api/health'
+      path: '/api/health'
+      fullPath: '/api/health'
+      preLoaderRoute: typeof ApiHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ensaios/': {
       id: '/ensaios/'
       path: '/'
@@ -189,6 +371,62 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EnsaiosNovoRouteImport
       parentRoute: typeof EnsaiosRoute
     }
+    '/api/bookings/': {
+      id: '/api/bookings/'
+      path: '/api/bookings'
+      fullPath: '/api/bookings/'
+      preLoaderRoute: typeof ApiBookingsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/bookings/$id': {
+      id: '/api/bookings/$id'
+      path: '/api/bookings/$id'
+      fullPath: '/api/bookings/$id'
+      preLoaderRoute: typeof ApiBookingsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/bookings/from-draft': {
+      id: '/api/bookings/from-draft'
+      path: '/api/bookings/from-draft'
+      fullPath: '/api/bookings/from-draft'
+      preLoaderRoute: typeof ApiBookingsFromDraftRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/clients/': {
+      id: '/api/clients/'
+      path: '/api/clients'
+      fullPath: '/api/clients/'
+      preLoaderRoute: typeof ApiClientsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/clients/$id': {
+      id: '/api/clients/$id'
+      path: '/api/clients/$id'
+      fullPath: '/api/clients/$id'
+      preLoaderRoute: typeof ApiClientsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/dev/reset': {
+      id: '/api/dev/reset'
+      path: '/api/dev/reset'
+      fullPath: '/api/dev/reset'
+      preLoaderRoute: typeof ApiDevResetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/packages/': {
+      id: '/api/packages/'
+      path: '/api/packages'
+      fullPath: '/api/packages/'
+      preLoaderRoute: typeof ApiPackagesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/packages/$id': {
+      id: '/api/packages/$id'
+      path: '/api/packages/$id'
+      fullPath: '/api/packages/$id'
+      preLoaderRoute: typeof ApiPackagesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ensaios/$id/': {
       id: '/ensaios/$id/'
       path: '/'
@@ -202,6 +440,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/ensaios/$id/editar'
       preLoaderRoute: typeof EnsaiosIdEditarRouteImport
       parentRoute: typeof EnsaiosIdRoute
+    }
+    '/api/bookings/$id/diagnostic': {
+      id: '/api/bookings/$id/diagnostic'
+      path: '/diagnostic'
+      fullPath: '/api/bookings/$id/diagnostic'
+      preLoaderRoute: typeof ApiBookingsIdDiagnosticRouteImport
+      parentRoute: typeof ApiBookingsIdRoute
+    }
+    '/api/bookings/$id/emit-invoice': {
+      id: '/api/bookings/$id/emit-invoice'
+      path: '/emit-invoice'
+      fullPath: '/api/bookings/$id/emit-invoice'
+      preLoaderRoute: typeof ApiBookingsIdEmitInvoiceRouteImport
+      parentRoute: typeof ApiBookingsIdRoute
+    }
+    '/api/bookings/$id/generate-contract': {
+      id: '/api/bookings/$id/generate-contract'
+      path: '/generate-contract'
+      fullPath: '/api/bookings/$id/generate-contract'
+      preLoaderRoute: typeof ApiBookingsIdGenerateContractRouteImport
+      parentRoute: typeof ApiBookingsIdRoute
     }
   }
 }
@@ -235,11 +494,37 @@ const EnsaiosRouteChildren: EnsaiosRouteChildren = {
 const EnsaiosRouteWithChildren =
   EnsaiosRoute._addFileChildren(EnsaiosRouteChildren)
 
+interface ApiBookingsIdRouteChildren {
+  ApiBookingsIdDiagnosticRoute: typeof ApiBookingsIdDiagnosticRoute
+  ApiBookingsIdEmitInvoiceRoute: typeof ApiBookingsIdEmitInvoiceRoute
+  ApiBookingsIdGenerateContractRoute: typeof ApiBookingsIdGenerateContractRoute
+}
+
+const ApiBookingsIdRouteChildren: ApiBookingsIdRouteChildren = {
+  ApiBookingsIdDiagnosticRoute: ApiBookingsIdDiagnosticRoute,
+  ApiBookingsIdEmitInvoiceRoute: ApiBookingsIdEmitInvoiceRoute,
+  ApiBookingsIdGenerateContractRoute: ApiBookingsIdGenerateContractRoute,
+}
+
+const ApiBookingsIdRouteWithChildren = ApiBookingsIdRoute._addFileChildren(
+  ApiBookingsIdRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ClientesRoute: ClientesRoute,
   EnsaiosRoute: EnsaiosRouteWithChildren,
   PacotesRoute: PacotesRoute,
+  ApiExtractRoute: ApiExtractRoute,
+  ApiHealthRoute: ApiHealthRoute,
+  ApiBookingsIdRoute: ApiBookingsIdRouteWithChildren,
+  ApiBookingsFromDraftRoute: ApiBookingsFromDraftRoute,
+  ApiClientsIdRoute: ApiClientsIdRoute,
+  ApiDevResetRoute: ApiDevResetRoute,
+  ApiPackagesIdRoute: ApiPackagesIdRoute,
+  ApiBookingsIndexRoute: ApiBookingsIndexRoute,
+  ApiClientsIndexRoute: ApiClientsIndexRoute,
+  ApiPackagesIndexRoute: ApiPackagesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

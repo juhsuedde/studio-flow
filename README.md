@@ -26,22 +26,24 @@ Os dois modos devem ser claramente alternáveis (abas ou toggle) e visualmente e
 - Use componentes shadcn/ui sempre que possível.
 
 ## ARQUITETURA DE DADOS (IMPORTANTE)
-- NÃO conecte nenhum backend real ainda (sem Supabase, sem APIs externas).
-- Camada de dados isolada (ex: src/lib/data/ ou src/services/): todos os CRUDs passam por funções dessa camada, que por enquanto usam dados mock (localStorage).
-- Comentários TODO claros em cada função indicando como será substituída por chamadas ao Supabase depois.
-- Arquivo schema.sql com o schema completo do banco (tabelas, enums, FKs, policies RLS, triggers), pronto para executar no Supabase futuramente.
+- O backend roda no servidor (TanStack Start): as telas chamam `src/lib/data/*`, que fazem fetch para as rotas `src/routes/api.*` — e as rotas usam repositórios em `src/server/repositories`.
+- A persistência atual é um adapter em memória (`src/server/db/memory.ts`), trocável pelo Supabase sem tocar em rotas nem UI. `DATA_DRIVER=memory` (padrão) ou `DATA_DRIVER=file` (salva em `.data/studio-flow.json` entre restarts).
+- `owner_id` vem sempre da sessão (`src/server/session.ts`), nunca do body — equivalente ao RLS do `schema.sql`.
+- Erros seguem um envelope único `{ error: { code, message, fields? } }`; ZodError vira 422, FKs/CHECKs violados viram 409/422.
+- `schema.sql` é o schema final do banco; `src/server/validation.ts` e os repositórios espelham as mesmas regras.
+- Comentários `TODO(supabase)`, `TODO(auth)` e `TODO(edge-function)` marcam exatamente o que trocar quando cada integração entrar.
 
-## ESCOPO — O QUE FAZER AGORA (apenas frontend)
+## ESCOPO — O QUE FOI FEITO
 1. Telas, navegação e design system completos
-2. Camada de dados mockada com os tipos/interfaces exatos do schema futuro
-3. Todos os CRUDs funcionais com dados mock
+2. Camada de dados isolada em `src/lib/data` com os tipos/interfaces exatos do schema
+3. Backend completo dos CRUDs (clientes, pacotes, ensaios) com validação e erros padronizados
 4. Estados de vazio, loading e erro bem tratados
-5. Seeds de exemplo: 4-5 bookings, 3 clientes e dados relacionados
-6. SEM tela de login: o app abre direto no dashboard (com TODO no código para adicionar Supabase Auth no futuro)
+5. Seeds de exemplo: 5 bookings, 3 clientes e 3 pacotes
+6. SEM tela de login: o app abre direto no dashboard. A sessão é mock (`src/server/session.ts`) e o Supabase Auth entra por lá sem mudar as rotas
 
-- NÃO conecte Supabase, autenticação, Google Calendar, nota fiscal, ClickSign, Notion, e-mail/WhatsApp ou qualquer API externa real.
-- Para integrações futuras, crie apenas: (a) botões/estados de UI, (b) campos de status nas interfaces/types, (c) comentários TODO indicando onde a Edge Function entrará.
-- NÃO crie lógica de IA real
+- NÃO conectados ainda (deixados preparados): Supabase, Supabase Auth, Google Calendar, nota fiscal, ClickSign, Notion, e-mail/WhatsApp.
+- Extração por texto é um MOCK heurístico no servidor (`src/server/services/extraction.ts`); a Edge Function de IA substitui só essa função.
+- O dashboard de demonstração pode ser restaurado com `POST /api/dev/reset`.
 
 This project was built with [Lovable](https://lovable.dev).
 
@@ -63,3 +65,18 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+### Backend e scripts úteis
+
+```sh
+bun run dev                          # servidor de desenvolvimento (memória, dados de seed)
+DATA_DRIVER=file bun run dev         # mantém os cadastros em .data/studio-flow.json
+bun run build                        # build do client + SSR (regenera src/routeTree.gen.ts)
+bun run test                         # suíte (validação, repositórios, serviços, rotas)
+bun run lint                         # eslint + prettier
+bunx tsc --noEmit                    # typecheck
+```
+
+Endpoints principais: `GET|POST /api/clients`, `GET|POST /api/bookings`,
+`PUT /api/bookings/from-draft` (pipeline único dos dois modos de cadastro),
+`POST /api/extract` (extração heurística), `POST /api/dev/reset`, `GET /api/health`.

@@ -1,38 +1,23 @@
-import { delay, now, readTable, uid, writeTable } from "./store";
+import { apiRequest } from "@/lib/api/client";
 import type { Package, PackageInput } from "./types";
 
-// TODO(supabase): supabase.from("packages").select("*").order("price_cents")
+/** Acesso a pacotes pela API — ver `src/lib/data/clients.ts` para o padrão. */
+
+const BASE = "/api/packages";
+
 export async function listPackages(): Promise<Package[]> {
-  await delay();
-  return readTable<Package>("packages").sort((a, b) => a.price_cents - b.price_cents);
+  return apiRequest<Package[]>(BASE);
 }
 
-// TODO(supabase): supabase.from("packages").insert(input).select().single()
 export async function createPackage(input: PackageInput): Promise<Package> {
-  await delay();
-  const row: Package = { ...input, id: uid(), owner_id: "mock-owner", created_at: now(), updated_at: now() };
-  writeTable("packages", [...readTable<Package>("packages"), row]);
-  return row;
+  return apiRequest<Package>(BASE, { method: "POST", body: input });
 }
 
-// TODO(supabase): supabase.from("packages").update(input).eq("id", id).select().single()
 export async function updatePackage(id: string, input: Partial<PackageInput>): Promise<Package> {
-  await delay();
-  const rows = readTable<Package>("packages");
-  const i = rows.findIndex((p) => p.id === id);
-  if (i < 0) throw new Error("Pacote não encontrado");
-  const current = rows[i];
-  if (!current) throw new Error("Pacote não encontrado");
-  const updated: Package = { ...current, ...input, updated_at: now() };
-  rows[i] = updated;
-  writeTable("packages", rows);
-  return updated;
+  return apiRequest<Package>(`${BASE}/${encodeURIComponent(id)}`, { method: "PATCH", body: input });
 }
 
-// TODO(supabase): supabase.from("packages").delete().eq("id", id)
+/** Retorna 409 quando o pacote está em uso por ensaios. */
 export async function deletePackage(id: string): Promise<void> {
-  await delay();
-  const inUse = readTable<{ package_id: string }>("bookings").some((b) => b.package_id === id);
-  if (inUse) throw new Error("Pacote em uso por ensaios. Desative-o em vez de excluir.");
-  writeTable("packages", readTable<Package>("packages").filter((p) => p.id !== id));
+  await apiRequest<void>(`${BASE}/${encodeURIComponent(id)}`, { method: "DELETE" });
 }

@@ -5,8 +5,22 @@ export type BookingStatus = "pending" | "scheduled" | "confirmed" | "completed" 
 export type PaymentMethod = "pix" | "card" | "cash" | "installments";
 export type PaymentStatus = "pending" | "partial" | "paid";
 export type BookingSource = "form" | "ai_text";
-/** Status de integrações futuras (Google Calendar, contrato, nota fiscal). */
-export type IntegrationStatus = "not_started" | "pending" | "done" | "error";
+
+/** Coluna futura de integração com o Google Calendar em `bookings`. */
+export type CalendarSyncStatus = "nao_sincronizado" | "sincronizado";
+export type ContractStatus = "nao_gerado" | "gerado" | "enviado" | "assinado";
+export type InvoiceStatus = "pendente" | "emitida";
+
+/** Seções fixas do card "Diagnóstico do ensaio" (jsonb `conteudo` de `diagnostics`). */
+export type DiagnosticSection = "referencias" | "looks" | "producao" | "pendencias";
+export type DiagnosticContent = Record<DiagnosticSection, string>;
+
+export const emptyDiagnosticContent = (): DiagnosticContent => ({
+  referencias: "",
+  looks: "",
+  producao: "",
+  pendencias: "",
+});
 
 export interface Client {
   id: string;
@@ -47,9 +61,7 @@ export interface Booking {
   payment_status: PaymentStatus;
   source: BookingSource;
   raw_text: string | null;
-  calendar_sync_status: IntegrationStatus;
-  contract_status: IntegrationStatus;
-  invoice_status: IntegrationStatus;
+  calendar_sync_status: CalendarSyncStatus;
   created_at: string;
   updated_at: string;
 }
@@ -57,10 +69,48 @@ export interface Booking {
 export interface BookingWithRelations extends Booking {
   client: Client | null;
   package: Package | null;
+  /** Linha 1:1 criada junto com o ensaio (jsonb `conteudo` com as seções). */
+  diagnostic: Diagnostic | null;
+  /** Linha 1:1 criada junto com o ensaio (status do contrato). */
+  contract: Contract | null;
+  /** Linha 1:1 criada junto com o ensaio (status da nota fiscal). */
+  invoice: Invoice | null;
+}
+
+export interface Diagnostic {
+  id: string;
+  owner_id: string;
+  booking_id: string;
+  conteudo: DiagnosticContent;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Contract {
+  id: string;
+  owner_id: string;
+  booking_id: string;
+  status: ContractStatus;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Invoice {
+  id: string;
+  owner_id: string;
+  booking_id: string;
+  status: InvoiceStatus;
+  numero: string | null;
+  issued_on: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
 export type ClientInput = Pick<Client, "name" | "phone" | "email" | "cpf" | "notes">;
-export type PackageInput = Pick<Package, "name" | "description" | "price_cents" | "duration_minutes" | "active">;
+export type PackageInput = Pick<
+  Package,
+  "name" | "description" | "price_cents" | "duration_minutes" | "active"
+>;
 export type BookingInput = Omit<Booking, "id" | "owner_id" | "created_at" | "updated_at">;
 
 /** Rascunho compartilhado pelos dois modos de cadastro (formulário e texto livre). */

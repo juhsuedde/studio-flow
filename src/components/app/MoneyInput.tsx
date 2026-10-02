@@ -1,7 +1,17 @@
 import { Input } from "@/components/ui/input";
 import { formatBRL } from "@/lib/format";
 
-export function MoneyInput({ value, onChange, id, invalid }: { value: number; onChange: (cents: number) => void; id?: string; invalid?: boolean }) {
+export function MoneyInput({
+  value,
+  onChange,
+  id,
+  invalid,
+}: {
+  value: number;
+  onChange: (cents: number) => void;
+  id?: string;
+  invalid?: boolean;
+}) {
   return (
     <Input
       id={id}

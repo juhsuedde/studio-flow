@@ -16,8 +16,12 @@ export function AppShell({ children }: { children: ReactNode }) {
     <div className="min-h-screen md:pl-60">
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-60 flex-col bg-sidebar text-sidebar-foreground md:flex">
         <div className="flex h-14 items-center gap-2 border-b border-sidebar-border px-5">
-          <div className="grid h-7 w-7 place-items-center rounded-md bg-sidebar-primary text-xs font-bold text-sidebar-primary-foreground">E</div>
-          <span className="text-sm font-semibold text-sidebar-accent-foreground">Estúdio · Back-office</span>
+          <div className="grid h-7 w-7 place-items-center rounded-md bg-sidebar-primary text-xs font-bold text-sidebar-primary-foreground">
+            E
+          </div>
+          <span className="text-sm font-semibold text-sidebar-accent-foreground">
+            Estúdio · Back-office
+          </span>
         </div>
         <nav className="flex flex-1 flex-col gap-1 p-3">
           {nav.map((n) => (
@@ -26,14 +30,18 @@ export function AppShell({ children }: { children: ReactNode }) {
               to={n.to}
               activeOptions={{ exact: true }}
               className="flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-              activeProps={{ className: "bg-sidebar-accent text-sidebar-accent-foreground font-medium" }}
+              activeProps={{
+                className: "bg-sidebar-accent text-sidebar-accent-foreground font-medium",
+              }}
             >
               <n.icon className="h-4 w-4" />
               {n.label === "Novo" ? "Novo ensaio" : n.label}
             </Link>
           ))}
         </nav>
-        <div className="border-t border-sidebar-border p-4 text-xs text-sidebar-foreground/60">Dados locais (modo demonstração)</div>
+        <div className="border-t border-sidebar-border p-4 text-xs text-sidebar-foreground/60">
+          Dados locais (modo demonstração)
+        </div>
       </aside>
 
       <main className="mx-auto max-w-6xl px-4 pb-24 pt-5 md:px-8 md:pb-10 md:pt-8">{children}</main>
@@ -56,7 +64,15 @@ export function AppShell({ children }: { children: ReactNode }) {
   );
 }
 
-export function PageHeader({ title, description, actions }: { title: string; description?: string; actions?: ReactNode }) {
+export function PageHeader({
+  title,
+  description,
+  actions,
+}: {
+  title: string;
+  description?: string;
+  actions?: ReactNode;
+}) {
   return (
     <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
       <div>

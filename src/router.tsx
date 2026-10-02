@@ -11,7 +11,11 @@ export const getRouter = () => {
     context: { queryClient },
     scrollRestoration: true,
     defaultPreloadStaleTime: 0,
-    defaultPendingComponent: () => <div className="p-4"><LoadingRows /></div>,
+    defaultPendingComponent: () => (
+      <div className="p-4">
+        <LoadingRows />
+      </div>
+    ),
   });
 
   return router;

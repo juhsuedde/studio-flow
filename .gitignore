@@ -20,6 +20,9 @@ dist-ssr
 .wrangler/
 .dev.vars
 
+# Banco JSON local de desenvolvimento (DATA_DRIVER=file)
+.data/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

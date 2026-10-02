@@ -16,7 +16,15 @@ export function LoadingRows({ rows = 4 }: { rows?: number }) {
   );
 }
 
-export function EmptyState({ title, description, action }: { title: string; description?: string; action?: ReactNode }) {
+export function EmptyState({
+  title,
+  description,
+  action,
+}: {
+  title: string;
+  description?: string;
+  action?: ReactNode;
+}) {
   return (
     <div className="flex flex-col items-center rounded-lg border border-dashed bg-card px-6 py-12 text-center">
       <Inbox className="h-8 w-8 text-muted-foreground" />
@@ -32,7 +40,9 @@ export function ErrorState({ error, onRetry }: { error: unknown; onRetry?: () =>
     <div className="flex flex-col items-center rounded-lg border border-destructive/30 bg-destructive/5 px-6 py-10 text-center">
       <AlertTriangle className="h-7 w-7 text-destructive" />
       <p className="mt-3 font-medium">Não foi possível carregar os dados</p>
-      <p className="mt-1 text-sm text-muted-foreground">{error instanceof Error ? error.message : "Erro desconhecido"}</p>
+      <p className="mt-1 text-sm text-muted-foreground">
+        {error instanceof Error ? error.message : "Erro desconhecido"}
+      </p>
       {onRetry && (
         <Button variant="outline" size="sm" className="mt-4" onClick={onRetry}>
           Tentar novamente
@@ -52,7 +62,13 @@ const statusStyles: Record<BookingStatus, string> = {
 
 export function StatusBadge({ status, className }: { status: BookingStatus; className?: string }) {
   return (
-    <span className={cn("inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs font-medium", statusStyles[status], className)}>
+    <span
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs font-medium",
+        statusStyles[status],
+        className,
+      )}
+    >
       <span className="h-1.5 w-1.5 rounded-full bg-current" />
       {statusLabel[status]}
     </span>
