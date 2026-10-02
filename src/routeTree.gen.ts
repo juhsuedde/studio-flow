@@ -10,33 +10,132 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ClientesRouteImport } from './routes/clientes'
+import { Route as EnsaiosRouteImport } from './routes/ensaios'
+import { Route as PacotesRouteImport } from './routes/pacotes'
+import { Route as EnsaiosIndexRouteImport } from './routes/ensaios.index'
+import { Route as EnsaiosIdRouteImport } from './routes/ensaios.$id'
+import { Route as EnsaiosNovoRouteImport } from './routes/ensaios.novo'
+import { Route as EnsaiosIdIndexRouteImport } from './routes/ensaios.$id.index'
+import { Route as EnsaiosIdEditarRouteImport } from './routes/ensaios.$id.editar'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ClientesRoute = ClientesRouteImport.update({
+  id: '/clientes',
+  path: '/clientes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnsaiosRoute = EnsaiosRouteImport.update({
+  id: '/ensaios',
+  path: '/ensaios',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PacotesRoute = PacotesRouteImport.update({
+  id: '/pacotes',
+  path: '/pacotes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnsaiosIndexRoute = EnsaiosIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => EnsaiosRoute,
+} as any)
+const EnsaiosIdRoute = EnsaiosIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => EnsaiosRoute,
+} as any)
+const EnsaiosNovoRoute = EnsaiosNovoRouteImport.update({
+  id: '/novo',
+  path: '/novo',
+  getParentRoute: () => EnsaiosRoute,
+} as any)
+const EnsaiosIdIndexRoute = EnsaiosIdIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => EnsaiosIdRoute,
+} as any)
+const EnsaiosIdEditarRoute = EnsaiosIdEditarRouteImport.update({
+  id: '/editar',
+  path: '/editar',
+  getParentRoute: () => EnsaiosIdRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/clientes': typeof ClientesRoute
+  '/ensaios': typeof EnsaiosRouteWithChildren
+  '/pacotes': typeof PacotesRoute
+  '/ensaios/$id': typeof EnsaiosIdRouteWithChildren
+  '/ensaios/novo': typeof EnsaiosNovoRoute
+  '/ensaios/': typeof EnsaiosIndexRoute
+  '/ensaios/$id/editar': typeof EnsaiosIdEditarRoute
+  '/ensaios/$id/': typeof EnsaiosIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/clientes': typeof ClientesRoute
+  '/pacotes': typeof PacotesRoute
+  '/ensaios/novo': typeof EnsaiosNovoRoute
+  '/ensaios': typeof EnsaiosIndexRoute
+  '/ensaios/$id/editar': typeof EnsaiosIdEditarRoute
+  '/ensaios/$id': typeof EnsaiosIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/clientes': typeof ClientesRoute
+  '/ensaios': typeof EnsaiosRouteWithChildren
+  '/pacotes': typeof PacotesRoute
+  '/ensaios/$id': typeof EnsaiosIdRouteWithChildren
+  '/ensaios/novo': typeof EnsaiosNovoRoute
+  '/ensaios/': typeof EnsaiosIndexRoute
+  '/ensaios/$id/editar': typeof EnsaiosIdEditarRoute
+  '/ensaios/$id/': typeof EnsaiosIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/clientes'
+    | '/ensaios'
+    | '/pacotes'
+    | '/ensaios/$id'
+    | '/ensaios/novo'
+    | '/ensaios/'
+    | '/ensaios/$id/editar'
+    | '/ensaios/$id/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/clientes'
+    | '/pacotes'
+    | '/ensaios/novo'
+    | '/ensaios'
+    | '/ensaios/$id/editar'
+    | '/ensaios/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/clientes'
+    | '/ensaios'
+    | '/pacotes'
+    | '/ensaios/$id'
+    | '/ensaios/novo'
+    | '/ensaios/'
+    | '/ensaios/$id/editar'
+    | '/ensaios/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ClientesRoute: typeof ClientesRoute
+  EnsaiosRoute: typeof EnsaiosRouteWithChildren
+  PacotesRoute: typeof PacotesRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +147,99 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/clientes': {
+      id: '/clientes'
+      path: '/clientes'
+      fullPath: '/clientes'
+      preLoaderRoute: typeof ClientesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ensaios': {
+      id: '/ensaios'
+      path: '/ensaios'
+      fullPath: '/ensaios'
+      preLoaderRoute: typeof EnsaiosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pacotes': {
+      id: '/pacotes'
+      path: '/pacotes'
+      fullPath: '/pacotes'
+      preLoaderRoute: typeof PacotesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ensaios/': {
+      id: '/ensaios/'
+      path: '/'
+      fullPath: '/ensaios/'
+      preLoaderRoute: typeof EnsaiosIndexRouteImport
+      parentRoute: typeof EnsaiosRoute
+    }
+    '/ensaios/$id': {
+      id: '/ensaios/$id'
+      path: '/$id'
+      fullPath: '/ensaios/$id'
+      preLoaderRoute: typeof EnsaiosIdRouteImport
+      parentRoute: typeof EnsaiosRoute
+    }
+    '/ensaios/novo': {
+      id: '/ensaios/novo'
+      path: '/novo'
+      fullPath: '/ensaios/novo'
+      preLoaderRoute: typeof EnsaiosNovoRouteImport
+      parentRoute: typeof EnsaiosRoute
+    }
+    '/ensaios/$id/': {
+      id: '/ensaios/$id/'
+      path: '/'
+      fullPath: '/ensaios/$id/'
+      preLoaderRoute: typeof EnsaiosIdIndexRouteImport
+      parentRoute: typeof EnsaiosIdRoute
+    }
+    '/ensaios/$id/editar': {
+      id: '/ensaios/$id/editar'
+      path: '/editar'
+      fullPath: '/ensaios/$id/editar'
+      preLoaderRoute: typeof EnsaiosIdEditarRouteImport
+      parentRoute: typeof EnsaiosIdRoute
+    }
   }
 }
 
+interface EnsaiosIdRouteChildren {
+  EnsaiosIdEditarRoute: typeof EnsaiosIdEditarRoute
+  EnsaiosIdIndexRoute: typeof EnsaiosIdIndexRoute
+}
+
+const EnsaiosIdRouteChildren: EnsaiosIdRouteChildren = {
+  EnsaiosIdEditarRoute: EnsaiosIdEditarRoute,
+  EnsaiosIdIndexRoute: EnsaiosIdIndexRoute,
+}
+
+const EnsaiosIdRouteWithChildren = EnsaiosIdRoute._addFileChildren(
+  EnsaiosIdRouteChildren,
+)
+
+interface EnsaiosRouteChildren {
+  EnsaiosIdRoute: typeof EnsaiosIdRouteWithChildren
+  EnsaiosNovoRoute: typeof EnsaiosNovoRoute
+  EnsaiosIndexRoute: typeof EnsaiosIndexRoute
+}
+
+const EnsaiosRouteChildren: EnsaiosRouteChildren = {
+  EnsaiosIdRoute: EnsaiosIdRouteWithChildren,
+  EnsaiosNovoRoute: EnsaiosNovoRoute,
+  EnsaiosIndexRoute: EnsaiosIndexRoute,
+}
+
+const EnsaiosRouteWithChildren =
+  EnsaiosRoute._addFileChildren(EnsaiosRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ClientesRoute: ClientesRoute,
+  EnsaiosRoute: EnsaiosRouteWithChildren,
+  PacotesRoute: PacotesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
