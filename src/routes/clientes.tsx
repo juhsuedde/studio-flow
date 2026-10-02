@@ -18,6 +18,7 @@ import { clientsQuery } from "@/lib/data/queries";
 import type { Client } from "@/lib/data/types";
 
 export const Route = createFileRoute("/clientes")({
+  ssr: false,
   loader: ({ context }) => context.queryClient.ensureQueryData(clientsQuery),
   head: () => ({ meta: [
     { title: "Clientes — Estúdio" }, { name: "description", content: "Cadastro e contatos das clientes do estúdio." },

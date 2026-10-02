@@ -15,6 +15,7 @@ import type { Package } from "@/lib/data/types";
 import { formatBRL } from "@/lib/format";
 
 export const Route = createFileRoute("/pacotes")({
+  ssr: false,
   loader: ({ context }) => context.queryClient.ensureQueryData(packagesQuery),
   head: () => ({ meta: [
     { title: "Pacotes — Estúdio" }, { name: "description", content: "Valores, duração e descrição dos pacotes de ensaio." },

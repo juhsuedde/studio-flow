@@ -15,6 +15,7 @@ import type { BookingWithRelations } from "@/lib/data/types";
 import { formatBRL, formatDate } from "@/lib/format";
 
 export const Route = createFileRoute("/ensaios/")({
+  ssr: false,
   loader: ({ context }) => context.queryClient.ensureQueryData(bookingsQuery),
   head: () => ({ meta: [
     { title: "Ensaios — Estúdio" }, { name: "description", content: "Agenda e gestão de todos os ensaios." },

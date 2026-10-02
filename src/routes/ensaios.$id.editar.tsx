@@ -6,6 +6,7 @@ import { bookingToDraft } from "@/lib/data/bookings";
 import { bookingQuery } from "@/lib/data/queries";
 
 export const Route = createFileRoute("/ensaios/$id/editar")({
+  ssr: false,
   loader: async ({ context, params }) => { const b = await context.queryClient.ensureQueryData(bookingQuery(params.id)); if (!b) throw notFound(); return b; },
   head: () => ({ meta: [
     { title: "Editar ensaio — Estúdio" }, { name: "description", content: "Atualize os dados do ensaio." },

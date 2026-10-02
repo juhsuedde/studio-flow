@@ -3,6 +3,7 @@ import { PageHeader } from "@/components/app/AppShell";
 import { BookingForm } from "@/components/booking/BookingForm";
 
 export const Route = createFileRoute("/ensaios/novo")({
+  ssr: false,
   head: () => ({ meta: [
     { title: "Novo ensaio — Estúdio" }, { name: "description", content: "Cadastre um ensaio por formulário guiado ou texto livre." },
     { property: "og:title", content: "Novo ensaio — Estúdio" }, { property: "og:description", content: "Cadastre um ensaio por formulário guiado ou texto livre." },

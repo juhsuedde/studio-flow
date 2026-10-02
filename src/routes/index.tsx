@@ -9,6 +9,7 @@ import { bookingsQuery, clientsQuery } from "@/lib/data/queries";
 import { formatBRL, formatDate } from "@/lib/format";
 
 export const Route = createFileRoute("/")({
+  ssr: false,
   loader: ({ context }) => Promise.all([context.queryClient.ensureQueryData(bookingsQuery), context.queryClient.ensureQueryData(clientsQuery)]),
   head: () => ({ meta: [
     { title: "Visão geral — Estúdio" }, { name: "description", content: "Painel de ensaios, clientes e recebimentos do estúdio." },

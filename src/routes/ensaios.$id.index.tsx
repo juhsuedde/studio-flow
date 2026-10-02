@@ -9,6 +9,7 @@ import { bookingQuery } from "@/lib/data/queries";
 import { formatBRL, formatDate, paymentMethodLabel, paymentStatusLabel } from "@/lib/format";
 
 export const Route = createFileRoute("/ensaios/$id/")({
+  ssr: false,
   loader: async ({ context, params }) => { const b = await context.queryClient.ensureQueryData(bookingQuery(params.id)); if (!b) throw notFound(); return b; },
   head: ({ loaderData }) => ({ meta: [
     { title: loaderData ? `${loaderData.client?.name ?? "Ensaio"} — Estúdio` : "Ensaio indisponível — Estúdio" }, { name: "description", content: "Detalhes, pagamento e integrações do ensaio." },
