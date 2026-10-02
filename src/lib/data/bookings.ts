@@ -32,7 +32,7 @@ export async function getBooking(id: string): Promise<BookingWithRelations | nul
 // e "generate-contract" (ClickSign) que atualizam calendar_sync_status / contract_status.
 export async function createBooking(input: BookingInput): Promise<Booking> {
   await delay();
-  const row: Booking = { ...input, id: uid(), created_at: now(), updated_at: now() };
+  const row: Booking = { ...input, id: uid(), owner_id: "mock-owner", created_at: now(), updated_at: now() };
   writeTable("bookings", [...readTable<Booking>("bookings"), row]);
   return row;
 }

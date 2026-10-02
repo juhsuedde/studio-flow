@@ -10,7 +10,7 @@ export async function listPackages(): Promise<Package[]> {
 // TODO(supabase): supabase.from("packages").insert(input).select().single()
 export async function createPackage(input: PackageInput): Promise<Package> {
   await delay();
-  const row: Package = { ...input, id: uid(), created_at: now(), updated_at: now() };
+  const row: Package = { ...input, id: uid(), owner_id: "mock-owner", created_at: now(), updated_at: now() };
   writeTable("packages", [...readTable<Package>("packages"), row]);
   return row;
 }

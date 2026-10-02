@@ -17,7 +17,7 @@ export async function getClient(id: string): Promise<Client | null> {
 // (owner_id é preenchido pelo default auth.uid() no banco)
 export async function createClient(input: ClientInput): Promise<Client> {
   await delay();
-  const row: Client = { ...input, id: uid(), created_at: now(), updated_at: now() };
+  const row: Client = { ...input, id: uid(), owner_id: "mock-owner", created_at: now(), updated_at: now() };
   writeTable("clients", [...readTable<Client>("clients"), row]);
   return row;
 }
