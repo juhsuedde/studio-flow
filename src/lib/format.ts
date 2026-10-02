@@ -5,7 +5,7 @@ export const formatBRL = (cents: number) => brl.format((cents || 0) / 100);
 
 export function formatDate(iso: string, opts: Intl.DateTimeFormatOptions = { day: "2-digit", month: "short", year: "numeric" }) {
   if (!iso) return "—";
-  const [y, m, d] = iso.split("-").map(Number);
+  const [y = 1970, m = 1, d = 1] = iso.split("-").map(Number);
   return new Date(y, m - 1, d).toLocaleDateString("pt-BR", opts);
 }
 

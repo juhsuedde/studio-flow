@@ -214,7 +214,7 @@ function Stepper({ step, onJump }: { step: number; onJump: (i: number) => void }
   );
 }
 
-function Field({ label, error, children, htmlFor, className }: { label: string; error?: string; children: React.ReactNode; htmlFor?: string; className?: string }) {
+function Field({ label, error, children, htmlFor, className }: { label: string; error?: string | undefined; children: React.ReactNode; htmlFor?: string | undefined; className?: string | undefined }) {
   return (
     <div className={cn("space-y-1.5", className)}>
       <Label htmlFor={htmlFor}>{label}</Label>

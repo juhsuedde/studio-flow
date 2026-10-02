@@ -28,9 +28,12 @@ export async function updateClient(id: string, input: Partial<ClientInput>): Pro
   const rows = readTable<Client>("clients");
   const i = rows.findIndex((c) => c.id === id);
   if (i < 0) throw new Error("Cliente não encontrada");
-  rows[i] = { ...rows[i], ...input, updated_at: now() };
+  const current = rows[i];
+  if (!current) throw new Error("Cliente não encontrada");
+  const updated: Client = { ...current, ...input, updated_at: now() };
+  rows[i] = updated;
   writeTable("clients", rows);
-  return rows[i];
+  return updated;
 }
 
 // TODO(supabase): supabase.from("clients").delete().eq("id", id)
