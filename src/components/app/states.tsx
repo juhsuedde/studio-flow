@@ -55,7 +55,7 @@ export function ErrorState({ error, onRetry }: { error: unknown; onRetry?: () =>
 const statusStyles: Record<BookingStatus, string> = {
   pending: "bg-warning/12 text-warning border-warning/30",
   scheduled: "bg-info/10 text-info border-info/30",
-  confirmed: "bg-primary/10 text-primary border-primary/30",
+  confirmed: "bg-studio-mint text-accent-foreground border-transparent",
   completed: "bg-success/10 text-success border-success/30",
   cancelled: "bg-destructive/10 text-destructive border-destructive/30",
 };
@@ -64,7 +64,7 @@ export function StatusBadge({ status, className }: { status: BookingStatus; clas
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs font-medium",
+        "inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-md border px-2 py-1 text-[11px] font-semibold",
         statusStyles[status],
         className,
       )}

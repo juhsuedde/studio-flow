@@ -15,3 +15,4 @@
 - Monetary values are integer cents throughout the domain layer to prevent floating-point errors.
 - Booking registration modes share one `BookingDraft` and one save pipeline so both persist identical fields.
 - Public content routes use TanStack Query loader prefetch plus suspense queries for consistent SSR and client caches.
+- Shared presentation uses global semantic tokens and AppShell; visual changes stay separate from domain data so workflows remain unchanged.

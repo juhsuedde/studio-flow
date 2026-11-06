@@ -1,8 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { CalendarDays, CircleDollarSign, Clock3, Plus, Users } from "lucide-react";
+import { ArrowUpRight, CalendarDays, CircleDollarSign, Clock3, Plus, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { PageHeader } from "@/components/app/AppShell";
 import { EmptyState, StatusBadge } from "@/components/app/states";
 import { bookingsQuery, clientsQuery } from "@/lib/data/queries";
@@ -41,7 +40,7 @@ function Index() {
     <div>
       <PageHeader
         title="Visão geral"
-        description="Acompanhe a agenda e os recebimentos."
+        description="Sua agenda, seus clientes e o que está por vir."
         actions={
           <Button asChild>
             <Link to="/ensaios/novo">
@@ -50,21 +49,23 @@ function Index() {
           </Button>
         }
       />
-      <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <Metric icon={CalendarDays} label="Próximos ensaios" value={String(active.length)} />
-        <Metric icon={CircleDollarSign} label="A receber" value={formatBRL(receivable)} />
-        <Metric icon={Users} label="Clientes" value={String(clients.length)} />
+      <section aria-label="Resumo do estúdio" className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <Metric icon={CalendarDays} label="Próximos ensaios" value={String(active.length)} tone="bg-studio-mint" index="01" />
+        <Metric icon={CircleDollarSign} label="A receber" value={formatBRL(receivable)} tone="bg-studio-yellow" index="02" />
+        <Metric icon={Users} label="Clientes" value={String(clients.length)} tone="bg-studio-blue" index="03" />
         <Metric
           icon={Clock3}
           label="Pendentes"
           value={String(bookings.filter((b) => b.status === "pending").length)}
+          tone="bg-studio-pink"
+          index="04"
         />
       </section>
-      <section className="mt-7">
-        <div className="mb-3 flex items-center justify-between">
-          <h2 className="font-semibold">Próximos ensaios</h2>
+      <section className="mt-10 sm:mt-12">
+        <div className="mb-5 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
+          <h2 className="min-w-0 text-lg font-bold">Próximos ensaios</h2>
           <Button variant="ghost" size="sm" asChild>
-            <Link to="/ensaios">Ver todos</Link>
+             <Link to="/ensaios">Ver todos <ArrowUpRight /></Link>
           </Button>
         </div>
         {upcoming.length === 0 ? (
@@ -77,16 +78,16 @@ function Index() {
             }
           />
         ) : (
-          <div className="overflow-hidden rounded-lg border bg-card">
+          <div className="border-t">
             {upcoming.map((b) => (
               <Link
                 key={b.id}
                 to="/ensaios/$id"
                 params={{ id: b.id }}
-                className="grid grid-cols-[3.5rem_1fr_auto] items-center gap-3 border-b p-3 last:border-b-0 hover:bg-muted/50 md:grid-cols-[5rem_1fr_1fr_auto]"
+                className="group grid grid-cols-[3.25rem_minmax(0,1fr)] items-center gap-x-4 gap-y-2 border-b py-5 transition-colors hover:bg-secondary/50 sm:grid-cols-[3.75rem_minmax(0,1fr)_auto] xl:grid-cols-[3.75rem_minmax(0,1fr)_minmax(0,1fr)_auto]"
               >
-                <div className="text-center">
-                  <div className="text-lg font-semibold tabular">
+                <div className="row-span-2 grid h-16 place-content-center rounded-lg bg-secondary text-center sm:row-span-1">
+                  <div className="text-xl font-bold tabular">
                     {formatDate(b.date, { day: "2-digit" })}
                   </div>
                   <div className="text-[11px] uppercase text-muted-foreground">
@@ -94,17 +95,17 @@ function Index() {
                   </div>
                 </div>
                 <div className="min-w-0">
-                  <div className="truncate text-sm font-medium">
+                  <div className="truncate text-sm font-bold sm:text-base">
                     {b.client?.name ?? "Cliente removida"}
                   </div>
-                  <div className="truncate text-xs text-muted-foreground">
+                  <div className="mt-1 truncate text-xs text-muted-foreground">
                     {b.package?.name} · {b.time}
                   </div>
                 </div>
-                <div className="hidden truncate text-sm text-muted-foreground md:block">
+                <div className="hidden min-w-0 truncate text-sm text-muted-foreground xl:block">
                   {b.location}
                 </div>
-                <StatusBadge status={b.status} />
+                <div className="col-start-2 flex items-center gap-4 sm:col-start-auto"><StatusBadge status={b.status} /><ArrowUpRight className="hidden h-4 w-4 text-muted-foreground sm:block" /></div>
               </Link>
             ))}
           </div>
@@ -118,22 +119,23 @@ function Metric({
   icon: Icon,
   label,
   value,
+  tone,
+  index,
 }: {
   icon: typeof CalendarDays;
   label: string;
   value: string;
+  tone: string;
+  index: string;
 }) {
   return (
-    <Card>
-      <CardContent className="flex items-center gap-3 p-4">
-        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-md bg-accent text-accent-foreground">
-          <Icon className="h-4 w-4" />
-        </div>
-        <div>
-          <p className="text-xs text-muted-foreground">{label}</p>
-          <p className="mt-0.5 font-mono text-lg font-medium tabular">{value}</p>
-        </div>
-      </CardContent>
-    </Card>
+    <div className={`min-w-0 rounded-lg p-5 text-foreground ${tone}`}>
+      <div className="mb-7 flex items-center justify-between">
+        <span className="font-mono text-[10px] text-foreground/60">{index}</span>
+        <Icon className="h-5 w-5 shrink-0" strokeWidth={1.5} />
+      </div>
+      <p className="whitespace-nowrap text-2xl font-semibold tabular">{value}</p>
+      <p className="mt-2 text-xs font-medium text-foreground/75">{label}</p>
+    </div>
   );
 }
